@@ -1,22 +1,24 @@
-import './globals.css'
-import Navbar from './components/Navbar'
+'use client';
 
-export const metadata = {
-  title: 'Assignment Challenge',
-  description: 'Basic Navbar with Next.js',
-}
+import { ReactNode } from 'react';
+import { usePathname } from 'next/navigation';
+import Navbar from './components/Navbar';
+import './globals.css';
 
-export default function RootLayout({ children }: { children: React.ReactNode }) {
+export default function RootLayout({ children }: { children: ReactNode }) {
+  const pathname = usePathname();
+
+  // List of routes where Navbar should be hidden
+  const hideNavbarRoutes = ['/login/step1', '/login/step2', '/login/step3', '/login/mfa'];
+
+  const shouldHideNavbar = hideNavbarRoutes.includes(pathname);
+
   return (
     <html lang="en">
-      <head>
-        <meta name="viewport" content="width=device-width, initial-scale=1" />
-      </head>
       <body>
-        <Navbar />
-        <main>{children}</main>
+        {!shouldHideNavbar && <Navbar />}
+        {children}
       </body>
     </html>
   );
 }
-

@@ -1,12 +1,19 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { FiMenu, FiX, FiSearch } from 'react-icons/fi';
 
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
   const [showSearch, setShowSearch] = useState(false);
+
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+
+  useEffect(() => {
+    const token = localStorage.getItem('auth-token');
+    setIsLoggedIn(!!token);
+  }, []);
 
   return (
     <nav className="bg-white text-black p-4 shadow-md">
@@ -59,9 +66,11 @@ export default function Navbar() {
             placeholder="Search..."
             className="px-2 py-1 rounded text-black"
           />
-          <Link href="/challenge2">
-            <button className="bg-cyan-600 text-white px-3 py-1 rounded">Login</button>
-          </Link>
+          {!isLoggedIn && (
+            <Link href="/login/step1" className="text-cyan-600 font-medium">
+              Login
+            </Link>
+          )}
         </div>
       </div>
 
@@ -75,7 +84,7 @@ export default function Navbar() {
           <Link href="/" className="hover:underline">Templates</Link>
           <Link href="/" className="hover:underline">Enterprise</Link>
 
-          <Link href="/challenge2" className="w-full max-w-sm">
+          <Link href="/login/step1" className="w-full max-w-sm">
             <button className="bg-cyan-600 text-white px-3 py-2 w-full rounded">Login</button>
           </Link>
         </div>
